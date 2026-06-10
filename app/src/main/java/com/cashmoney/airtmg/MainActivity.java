@@ -1,4 +1,4 @@
- package com.cashmoney.airtmg;
+package com.cashmoney.airtmg;
 
 import android.os.Bundle;
 
