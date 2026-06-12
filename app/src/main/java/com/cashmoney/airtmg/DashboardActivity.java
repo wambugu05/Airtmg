@@ -19,31 +19,36 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        
+        // Use the modern listener
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
 
-        // Load the default fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            if (itemId == R.id.nav_dashboard) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.nav_send) {
+                selectedFragment = new SendFragment();
+            } else if (itemId == R.id.nav_convert) {
+                selectedFragment = new ConvertFragment();
+            } else if (itemId == R.id.nav_history) {
+                selectedFragment = new HistoryFragment();
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
+            return true;
+        });
+
+        // Set default fragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+        }
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            item -> {
-                Fragment selectedFragment = null;
-
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_dashboard) {
-                    selectedFragment = new HomeFragment();
-                } else if (itemId == R.id.nav_send) {
-                    selectedFragment = new SendFragment();
-                } else if (itemId == R.id.nav_convert) {
-                    selectedFragment = new ConvertFragment();
-                } else if (itemId == R.id.nav_history) {
-                    selectedFragment = new HistoryFragment();
-                }
-
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                }
-
-                return true;
-            };
 }
