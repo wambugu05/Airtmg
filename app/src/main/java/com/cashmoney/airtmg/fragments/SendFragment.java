@@ -1,5 +1,6 @@
 package com.cashmoney.airtmg.fragments;
 
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,15 +43,29 @@ public class SendFragment extends Fragment {
             }
 
             double amount = Double.parseDouble(amountStr);
-            processTransaction(recipient, amount);
+            showConfirmationDialog(recipient, amount);
         });
 
         return view;
     }
 
+    private void showConfirmationDialog(String recipient, double amount) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Confirm Transaction")
+                .setMessage("Are you sure you want to send $" + amount + " to @" + recipient + "?")
+                .setPositiveButton("Send Now", (dialog, which) -> processTransaction(recipient, amount))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     private void processTransaction(String recipient, double amount) {
         String currentUser = getActivity().getIntent().getStringExtra("USERNAME");
         if (currentUser == null) currentUser = "DemoUser";
+
+        if (recipient.equals(currentUser)) {
+            Toast.makeText(getContext(), "You cannot send money to yourself", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Cursor cursor = dbHelper.getUserData(currentUser);
         Cursor recipientCursor = dbHelper.getUserData(recipient);
@@ -63,15 +78,13 @@ public class SendFragment extends Fragment {
             double recipientBalance = recipientCursor.getDouble(recipientCursor.getColumnIndexOrThrow("balance"));
 
             if (balance >= amount) {
-                // Update sender
                 dbHelper.updateBalance(userId, balance - amount);
                 dbHelper.addTransaction(userId, "SEND", amount, "USD", "Sent to " + recipient);
 
-                // Update recipient
                 dbHelper.updateBalance(recipientId, recipientBalance + amount);
                 dbHelper.addTransaction(recipientId, "RECEIVE", amount, "USD", "Received from " + currentUser);
 
-                Toast.makeText(getContext(), "Transaction Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Transaction Successful", Toast.LENGTH_LONG).show();
                 etRecipient.setText("");
                 etAmount.setText("");
             } else {

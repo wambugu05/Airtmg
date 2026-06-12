@@ -3,11 +3,15 @@
     <item
         android:id="@+id/nav_dashboard"
         android:icon="@android:drawable/ic_menu_today"
-        android:title="Dashboard" />
+        android:title="Home" />
     <item
         android:id="@+id/nav_send"
         android:icon="@android:drawable/ic_menu_send"
         android:title="Send" />
+    <item
+        android:id="@+id/nav_receive"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Receive" />
     <item
         android:id="@+id/nav_convert"
         android:icon="@android:drawable/ic_menu_compass"
