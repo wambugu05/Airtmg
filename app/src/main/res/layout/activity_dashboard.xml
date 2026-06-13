@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="?attr/colorSurface">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -16,9 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="#4A90E2"
-        app:itemTextColor="#4A90E2"/>
+        app:labelVisibilityMode="labeled"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"/>
 
 </RelativeLayout>

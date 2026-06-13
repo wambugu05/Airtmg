@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.cardview)
     implementation(libs.swiperefreshlayout)
+    implementation(libs.biometric)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

@@ -8,16 +8,16 @@
     <View
         android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/accentBlue"
+        android:layout_height="220dp"
+        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="16dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4">
@@ -29,11 +29,12 @@
             android:padding="32dp">
 
             <ImageView
+                android:id="@+id/ivLogo"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center"
                 android:src="@android:drawable/ic_lock_lock"
-                app:tint="@color/accentBlue" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="Welcome Back"
-                android:textColor="@color/textPrimary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -50,12 +51,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Login to manage your wallet"
-                android:textColor="@color/textSecondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilUsername"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -71,7 +72,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -88,13 +89,11 @@
 
             <Button
                 android:id="@+id/btnLogin"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="@color/accentBlue"
                 android:text="Login"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />
@@ -106,10 +105,20 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
                 android:text="Don't have an account? Sign Up"
-                android:textColor="@color/accentBlue"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

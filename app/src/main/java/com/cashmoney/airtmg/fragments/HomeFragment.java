@@ -85,6 +85,12 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadDashboardData(); // Real-time update when returning to screen
+    }
+
     private void loadDashboardData() {
         Cursor cursor = dbHelper.getUserData(username);
         if (cursor != null) {
@@ -143,9 +149,10 @@ public class HomeFragment extends Fragment {
                 String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String desc = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
 
                 holder.tvType.setText(type);
-                holder.tvDesc.setText(desc);
+                holder.tvDesc.setText(String.format("%s • %s", desc, timestamp));
                 holder.tvAmount.setText(String.format(Locale.getDefault(), "$%.2f", amount));
 
                 if (Objects.equals(type, "SEND")) {

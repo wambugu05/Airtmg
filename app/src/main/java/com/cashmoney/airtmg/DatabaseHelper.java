@@ -83,4 +83,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM transactions WHERE user_id = ? ORDER BY timestamp DESC", new String[]{String.valueOf(userId)});
     }
+
+    public Cursor searchTransactions(int userId, String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String searchQuery = "%" + query + "%";
+        return db.rawQuery("SELECT * FROM transactions WHERE user_id = ? AND (description LIKE ? OR type LIKE ?) ORDER BY timestamp DESC", 
+                new String[]{String.valueOf(userId), searchQuery, searchQuery});
+    }
 }

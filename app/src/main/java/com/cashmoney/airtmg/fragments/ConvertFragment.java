@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,11 +30,11 @@ public class ConvertFragment extends Fragment {
     private Spinner spinnerFrom, spinnerTo;
     private EditText etFromAmount;
     private TextView tvToAmount, tvExchangeRate;
+    private ProgressBar progressBar;
 
     private static final Map<String, Double> RATES = new HashMap<>();
 
     static {
-        // Rates relative to 1 USD
         RATES.put("USD", 1.0);
         RATES.put("EUR", 0.92);
         RATES.put("GBP", 0.79);
@@ -57,6 +58,7 @@ public class ConvertFragment extends Fragment {
         tvExchangeRate = view.findViewById(R.id.tvExchangeRate);
         Button btnConvert = view.findViewById(R.id.btnConvert);
         ImageButton btnSwap = view.findViewById(R.id.btnSwap);
+        progressBar = new ProgressBar(getContext()); // Programmatic loader simulator
 
         Context context = getContext();
         if (context != null) {
@@ -67,7 +69,6 @@ public class ConvertFragment extends Fragment {
             spinnerFrom.setAdapter(adapter);
             spinnerTo.setAdapter(adapter);
 
-            // Set defaults
             spinnerFrom.setSelection(adapter.getPosition("USD"));
             spinnerTo.setSelection(adapter.getPosition("EUR"));
         }
@@ -115,7 +116,6 @@ public class ConvertFragment extends Fragment {
             Double toRate = RATES.get(toCurrency);
 
             if (fromRate != null && toRate != null) {
-                // Convert to USD first, then to target currency
                 double amountInUsd = amount / fromRate;
                 double result = amountInUsd * toRate;
 
