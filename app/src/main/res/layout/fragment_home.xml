@@ -16,7 +16,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -30,7 +29,7 @@
                         android:id="@+id/tvWelcome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Welcome Back,"
+                        android:text="@string/welcome_back"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -54,10 +53,10 @@
                     android:src="@android:drawable/ic_menu_myplaces"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.MediumComponent"
                     app:strokeColor="@color/accentBlue"
-                    app:strokeWidth="2dp" />
+                    app:strokeWidth="2dp"
+                    android:contentDescription="Profile Picture" />
             </RelativeLayout>
 
-            <!-- Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total Available Balance"
+                        android:text="@string/total_balance"
                         android:textColor="#FDFBFF"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -85,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="$ 0.00"
+                        android:text="@string/default_amount"
                         android:textColor="@color/white"
                         android:textSize="42sp"
                         android:textStyle="bold" />
@@ -105,7 +104,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Income"
+                                android:text="@string/income"
                                 android:textColor="#B3FFFFFF"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -127,7 +126,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Expense"
+                                android:text="@string/expense"
                                 android:textColor="#B3FFFFFF"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -145,12 +144,11 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Quick Actions -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Financial Services"
+                android:text="@string/financial_services"
                 android:textColor="@color/textPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -179,12 +177,13 @@
                             android:layout_height="match_parent"
                             android:padding="16dp"
                             android:src="@android:drawable/ic_menu_send"
-                            app:tint="@color/primary"/>
+                            app:tint="@color/primary"
+                            android:contentDescription="Send Money" />
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Send"
+                        android:text="@string/send"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/textPrimary"
                         android:textStyle="bold"
@@ -208,12 +207,13 @@
                             android:layout_height="match_parent"
                             android:padding="16dp"
                             android:src="@android:drawable/ic_input_add"
-                            app:tint="@color/accentGreen"/>
+                            app:tint="@color/accentGreen"
+                            android:contentDescription="Receive Money" />
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Receive"
+                        android:text="@string/receive"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/textPrimary"
                         android:textStyle="bold"
@@ -237,12 +237,13 @@
                             android:layout_height="match_parent"
                             android:padding="16dp"
                             android:src="@android:drawable/ic_menu_compass"
-                            app:tint="#D97706"/>
+                            app:tint="#D97706"
+                            android:contentDescription="Currency Converter" />
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Convert"
+                        android:text="@string/convert"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/textPrimary"
                         android:textStyle="bold"
@@ -251,7 +252,6 @@
 
             </LinearLayout>
 
-            <!-- Recent Transactions -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,7 +259,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Recent Transactions"
+                    android:text="@string/recent_transactions"
                     android:textColor="@color/textPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="View All"
+                    android:text="@string/view_all"
                     android:textColor="@color/primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />

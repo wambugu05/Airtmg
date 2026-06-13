@@ -27,7 +27,6 @@ public class HistoryFragment extends Fragment {
 
     private RecyclerView rvHistory;
     private DatabaseHelper dbHelper;
-    private EditText etSearch;
     private int userId;
 
     @Nullable
@@ -36,7 +35,7 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
         rvHistory = view.findViewById(R.id.rvHistory);
-        etSearch = view.findViewById(R.id.etSearch);
+        EditText etSearch = view.findViewById(R.id.etSearch);
         
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
         dbHelper = new DatabaseHelper(getContext());

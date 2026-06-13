@@ -1,4 +1,42 @@
 <resources>
     <string name="app_name">Airtmg</string>
     <string name="default_amount">0.00</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Securely log in to your wallet</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="new_user_register">New User? Create Account</string>
+
+    <string name="register_title">Join Airtmg</string>
+    <string name="register_subtitle">Start your financial journey</string>
+    <string name="email">Email</string>
+    <string name="register_btn">Register</string>
+    <string name="already_have_account">Already have an account? Login</string>
+
+    <!-- Dashboard -->
+    <string name="welcome_back">Welcome Back,</string>
+    <string name="total_balance">Total Available Balance</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="financial_services">Financial Services</string>
+    <string name="send">Send</string>
+    <string name="receive">Receive</string>
+    <string name="convert">Convert</string>
+    <string name="recent_transactions">Recent Transactions</string>
+    <string name="view_all">View All</string>
+
+    <!-- Fragments -->
+    <string name="history_title">Transaction History</string>
+    <string name="search_hint">Search transactions...</string>
+    <string name="currency_converter">Currency Converter</string>
+    <string name="converter_subtitle">Get live exchange rates instantly</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="amount">Amount</string>
+    <string name="my_profile">My Profile</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="logout">Logout</string>
 </resources>

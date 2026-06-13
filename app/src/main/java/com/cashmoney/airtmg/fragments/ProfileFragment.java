@@ -28,7 +28,7 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tvProfileName);
         tvEmail = view.findViewById(R.id.tvProfileEmail);
-        TextView tvLogout = view.findViewById(R.id.tvLogout);
+        TextView tvLogoutBtn = view.findViewById(R.id.tvLogout);
         dbHelper = new DatabaseHelper(getContext());
 
         String username = null;
@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
 
         loadProfile(username);
 
-        tvLogout.setOnClickListener(v -> {
+        tvLogoutBtn.setOnClickListener(v -> {
             if (getActivity() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

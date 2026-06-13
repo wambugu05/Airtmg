@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
-    private TextView tvUsername, tvBalance, tvIncome, tvExpense;
+    private TextView tvBalance, tvIncome, tvExpense;
     private RecyclerView rvRecent;
     private SwipeRefreshLayout swipeRefresh;
     private DatabaseHelper dbHelper;
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tvUsername = view.findViewById(R.id.tvUsername);
+        TextView tvUsernameDisplay = view.findViewById(R.id.tvUsername);
         tvBalance = view.findViewById(R.id.tvBalance);
         tvIncome = view.findViewById(R.id.tvIncome);
         tvExpense = view.findViewById(R.id.tvExpense);
@@ -51,13 +51,12 @@ public class HomeFragment extends Fragment {
         }
         if (username == null) username = "DemoUser";
 
-        tvUsername.setText(username);
+        tvUsernameDisplay.setText(username);
         
         loadDashboardData();
 
         swipeRefresh.setOnRefreshListener(this::loadDashboardData);
 
-        // Functional navigation from Dashboard
         tvViewAll.setOnClickListener(v -> {
             if (getActivity() instanceof DashboardActivity) {
                 ((DashboardActivity) getActivity()).showHistory();
@@ -88,7 +87,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadDashboardData(); // Real-time update when returning to screen
+        loadDashboardData();
     }
 
     private void loadDashboardData() {
@@ -99,7 +98,6 @@ public class HomeFragment extends Fragment {
                 double balance = cursor.getDouble(cursor.getColumnIndexOrThrow("balance"));
                 tvBalance.setText(String.format(Locale.getDefault(), "$%.2f", balance));
 
-                // Load transactions for stats and list
                 Cursor transCursor = dbHelper.getTransactions(userId);
                 if (transCursor != null) {
                     updateStats(transCursor);
@@ -112,21 +110,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateStats(Cursor cursor) {
-        double income = 0;
-        double expense = 0;
+        double incomeTotal = 0;
+        double expenseTotal = 0;
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 if (Objects.equals(type, "RECEIVE")) {
-                    income += amount;
+                    incomeTotal += amount;
                 } else if (Objects.equals(type, "SEND")) {
-                    expense += amount;
+                    expenseTotal += amount;
                 }
             } while (cursor.moveToNext());
         }
-        tvIncome.setText(String.format(Locale.getDefault(), "+$%.2f", income));
-        tvExpense.setText(String.format(Locale.getDefault(), "-$%.2f", expense));
+        tvIncome.setText(String.format(Locale.getDefault(), "+$%.2f", incomeTotal));
+        tvExpense.setText(String.format(Locale.getDefault(), "-$%.2f", expenseTotal));
     }
 
     private static class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {

@@ -55,9 +55,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        progressBar.setVisibility(View.VISIBLE);
         if (dbHelper.checkUser(username, password)) {
             navigateToDashboard(username);
         } else {
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
         }
     }

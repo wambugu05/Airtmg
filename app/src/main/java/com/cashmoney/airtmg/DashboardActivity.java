@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cashmoney.airtmg.fragments.ConvertFragment;
 import com.cashmoney.airtmg.fragments.HomeFragment;
+import com.cashmoney.airtmg.fragments.HistoryFragment;
 import com.cashmoney.airtmg.fragments.ProfileFragment;
 import com.cashmoney.airtmg.fragments.ReceiveFragment;
 import com.cashmoney.airtmg.fragments.SendFragment;
@@ -22,7 +23,7 @@ public class DashboardActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         
         bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            Fragment selectedFragment;
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_dashboard) {
@@ -35,18 +36,17 @@ public class DashboardActivity extends AppCompatActivity {
                 selectedFragment = new ConvertFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
+            } else {
+                return false;
             }
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
-            }
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.fragment_container, selectedFragment)
+                    .commit();
             return true;
         });
 
-        // Set default fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())
@@ -62,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
     public void showHistory() {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.fragment_container, new com.cashmoney.airtmg.fragments.HistoryFragment())
+                .replace(R.id.fragment_container, new HistoryFragment())
                 .addToBackStack(null)
                 .commit();
     }
