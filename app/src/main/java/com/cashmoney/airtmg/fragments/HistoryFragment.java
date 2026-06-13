@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class HistoryFragment extends Fragment {
 
@@ -39,20 +40,27 @@ public class HistoryFragment extends Fragment {
     }
 
     private void loadHistory() {
-        String username = getActivity().getIntent().getStringExtra("USERNAME");
+        String username = null;
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            username = getActivity().getIntent().getStringExtra("USERNAME");
+        }
         if (username == null) username = "DemoUser";
 
         Cursor userCursor = dbHelper.getUserData(username);
-        if (userCursor.moveToFirst()) {
-            int userId = userCursor.getInt(userCursor.getColumnIndexOrThrow("id"));
-            Cursor transCursor = dbHelper.getTransactions(userId);
-            rvHistory.setAdapter(new TransactionAdapter(transCursor));
+        if (userCursor != null) {
+            if (userCursor.moveToFirst()) {
+                int userId = userCursor.getInt(userCursor.getColumnIndexOrThrow("id"));
+                Cursor transCursor = dbHelper.getTransactions(userId);
+                if (transCursor != null) {
+                    rvHistory.setAdapter(new TransactionAdapter(transCursor));
+                }
+            }
+            userCursor.close();
         }
-        userCursor.close();
     }
 
     private class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
-        private Cursor cursor;
+        private final Cursor cursor;
 
         public TransactionAdapter(Cursor cursor) {
             this.cursor = cursor;
@@ -74,19 +82,19 @@ public class HistoryFragment extends Fragment {
 
                 holder.tvType.setText(type);
                 holder.tvDesc.setText(desc);
-                holder.tvAmount.setText(String.format("$%.2f", amount));
+                holder.tvAmount.setText(String.format(Locale.getDefault(), "$%.2f", amount));
                 
-                if (type.equals("SEND")) {
-                    holder.tvAmount.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                if (Objects.equals(type, "SEND")) {
+                    holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
                 } else {
-                    holder.tvAmount.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                    holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_dark));
                 }
             }
         }
 
         @Override
         public int getItemCount() {
-            return cursor.getCount();
+            return cursor != null ? cursor.getCount() : 0;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

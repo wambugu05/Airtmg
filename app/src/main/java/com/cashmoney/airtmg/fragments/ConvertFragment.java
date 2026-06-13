@@ -1,5 +1,6 @@
 package com.cashmoney.airtmg.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,8 +29,6 @@ public class ConvertFragment extends Fragment {
     private Spinner spinnerFrom, spinnerTo;
     private EditText etFromAmount;
     private TextView tvToAmount, tvExchangeRate;
-    private Button btnConvert;
-    private ImageButton btnSwap;
 
     private static final Map<String, Double> RATES = new HashMap<>();
 
@@ -56,19 +55,22 @@ public class ConvertFragment extends Fragment {
         etFromAmount = view.findViewById(R.id.etFromAmount);
         tvToAmount = view.findViewById(R.id.tvToAmount);
         tvExchangeRate = view.findViewById(R.id.tvExchangeRate);
-        btnConvert = view.findViewById(R.id.btnConvert);
-        btnSwap = view.findViewById(R.id.btnSwap);
+        Button btnConvert = view.findViewById(R.id.btnConvert);
+        ImageButton btnSwap = view.findViewById(R.id.btnSwap);
 
-        String[] currencies = RATES.keySet().toArray(new String[0]);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currencies);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Context context = getContext();
+        if (context != null) {
+            String[] currencies = RATES.keySet().toArray(new String[0]);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinnerFrom.setAdapter(adapter);
-        spinnerTo.setAdapter(adapter);
+            spinnerFrom.setAdapter(adapter);
+            spinnerTo.setAdapter(adapter);
 
-        // Set defaults
-        spinnerFrom.setSelection(adapter.getPosition("USD"));
-        spinnerTo.setSelection(adapter.getPosition("EUR"));
+            // Set defaults
+            spinnerFrom.setSelection(adapter.getPosition("USD"));
+            spinnerTo.setSelection(adapter.getPosition("EUR"));
+        }
 
         btnConvert.setOnClickListener(v -> performConversion());
 
@@ -94,31 +96,37 @@ public class ConvertFragment extends Fragment {
     }
 
     private void performConversion() {
-        String fromCurrency = spinnerFrom.getSelectedItem().toString();
-        String toCurrency = spinnerTo.getSelectedItem().toString();
+        Object fromItem = spinnerFrom.getSelectedItem();
+        Object toItem = spinnerTo.getSelectedItem();
+        if (fromItem == null || toItem == null) return;
+
+        String fromCurrency = fromItem.toString();
+        String toCurrency = toItem.toString();
         String amountStr = etFromAmount.getText().toString();
 
         if (amountStr.isEmpty()) {
-            tvToAmount.setText("0.00");
+            tvToAmount.setText(R.string.default_amount);
             return;
         }
 
         try {
             double amount = Double.parseDouble(amountStr);
-            double fromRate = RATES.get(fromCurrency);
-            double toRate = RATES.get(toCurrency);
+            Double fromRate = RATES.get(fromCurrency);
+            Double toRate = RATES.get(toCurrency);
 
-            // Convert to USD first, then to target currency
-            double amountInUsd = amount / fromRate;
-            double result = amountInUsd * toRate;
+            if (fromRate != null && toRate != null) {
+                // Convert to USD first, then to target currency
+                double amountInUsd = amount / fromRate;
+                double result = amountInUsd * toRate;
 
-            tvToAmount.setText(String.format(Locale.getDefault(), "%.2f", result));
-            
-            double rate = toRate / fromRate;
-            tvExchangeRate.setText(String.format(Locale.getDefault(), "1 %s = %.4f %s", fromCurrency, rate, toCurrency));
+                tvToAmount.setText(String.format(Locale.getDefault(), "%.2f", result));
+                
+                double rate = toRate / fromRate;
+                tvExchangeRate.setText(String.format(Locale.getDefault(), "1 %s = %.4f %s", fromCurrency, rate, toCurrency));
+            }
             
         } catch (NumberFormatException e) {
-            tvToAmount.setText("0.00");
+            tvToAmount.setText(R.string.default_amount);
         }
     }
 }

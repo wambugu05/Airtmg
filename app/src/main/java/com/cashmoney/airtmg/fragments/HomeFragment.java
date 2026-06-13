@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.R;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -42,7 +44,9 @@ public class HomeFragment extends Fragment {
         dbHelper = new DatabaseHelper(getContext());
         rvRecent.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        username = getActivity().getIntent().getStringExtra("USERNAME");
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            username = getActivity().getIntent().getStringExtra("USERNAME");
+        }
         if (username == null) username = "DemoUser";
 
         tvUsername.setText(username);
@@ -56,19 +60,21 @@ public class HomeFragment extends Fragment {
 
     private void loadDashboardData() {
         Cursor cursor = dbHelper.getUserData(username);
-        if (cursor.moveToFirst()) {
-            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-            double balance = cursor.getDouble(cursor.getColumnIndexOrThrow("balance"));
-            tvBalance.setText(String.format(Locale.getDefault(), "$%.2f", balance));
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                double balance = cursor.getDouble(cursor.getColumnIndexOrThrow("balance"));
+                tvBalance.setText(String.format(Locale.getDefault(), "$%.2f", balance));
 
-            // Load transactions for stats and list
-            Cursor transCursor = dbHelper.getTransactions(userId);
-            updateStats(transCursor);
-            
-            // Limit to 3 recent transactions for the home screen
-            rvRecent.setAdapter(new RecentAdapter(transCursor));
+                // Load transactions for stats and list
+                Cursor transCursor = dbHelper.getTransactions(userId);
+                if (transCursor != null) {
+                    updateStats(transCursor);
+                    rvRecent.setAdapter(new RecentAdapter(transCursor));
+                }
+            }
+            cursor.close();
         }
-        cursor.close();
         swipeRefresh.setRefreshing(false);
     }
 
@@ -79,9 +85,9 @@ public class HomeFragment extends Fragment {
             do {
                 String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-                if (type.equals("RECEIVE")) {
+                if (Objects.equals(type, "RECEIVE")) {
                     income += amount;
-                } else if (type.equals("SEND")) {
+                } else if (Objects.equals(type, "SEND")) {
                     expense += amount;
                 }
             } while (cursor.moveToNext());
@@ -91,7 +97,7 @@ public class HomeFragment extends Fragment {
     }
 
     private class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
-        private Cursor cursor;
+        private final Cursor cursor;
 
         public RecentAdapter(Cursor cursor) {
             this.cursor = cursor;
@@ -115,17 +121,17 @@ public class HomeFragment extends Fragment {
                 holder.tvDesc.setText(desc);
                 holder.tvAmount.setText(String.format(Locale.getDefault(), "$%.2f", amount));
 
-                if (type.equals("SEND")) {
-                    holder.tvAmount.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                if (Objects.equals(type, "SEND")) {
+                    holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
                 } else {
-                    holder.tvAmount.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                    holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_dark));
                 }
             }
         }
 
         @Override
         public int getItemCount() {
-            return Math.min(cursor.getCount(), 3); // Show only top 3
+            return cursor != null ? Math.min(cursor.getCount(), 3) : 0;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

@@ -17,10 +17,11 @@ import androidx.fragment.app.Fragment;
 import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.R;
 
+import java.util.Objects;
+
 public class SendFragment extends Fragment {
 
     private EditText etRecipient, etAmount;
-    private Button btnSend;
     private DatabaseHelper dbHelper;
 
     @Nullable
@@ -30,7 +31,7 @@ public class SendFragment extends Fragment {
 
         etRecipient = view.findViewById(R.id.etRecipient);
         etAmount = view.findViewById(R.id.etAmount);
-        btnSend = view.findViewById(R.id.btnSendMoney);
+        Button btnSend = view.findViewById(R.id.btnSendMoney);
         dbHelper = new DatabaseHelper(getContext());
 
         btnSend.setOnClickListener(v -> {
@@ -42,8 +43,12 @@ public class SendFragment extends Fragment {
                 return;
             }
 
-            double amount = Double.parseDouble(amountStr);
-            showConfirmationDialog(recipient, amount);
+            try {
+                double amount = Double.parseDouble(amountStr);
+                showConfirmationDialog(recipient, amount);
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Invalid amount", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return view;
@@ -59,10 +64,13 @@ public class SendFragment extends Fragment {
     }
 
     private void processTransaction(String recipient, double amount) {
-        String currentUser = getActivity().getIntent().getStringExtra("USERNAME");
+        String currentUser = null;
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            currentUser = getActivity().getIntent().getStringExtra("USERNAME");
+        }
         if (currentUser == null) currentUser = "DemoUser";
 
-        if (recipient.equals(currentUser)) {
+        if (Objects.equals(recipient, currentUser)) {
             Toast.makeText(getContext(), "You cannot send money to yourself", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -70,7 +78,7 @@ public class SendFragment extends Fragment {
         Cursor cursor = dbHelper.getUserData(currentUser);
         Cursor recipientCursor = dbHelper.getUserData(recipient);
 
-        if (cursor.moveToFirst() && recipientCursor.moveToFirst()) {
+        if (cursor != null && recipientCursor != null && cursor.moveToFirst() && recipientCursor.moveToFirst()) {
             int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             double balance = cursor.getDouble(cursor.getColumnIndexOrThrow("balance"));
 
@@ -93,7 +101,7 @@ public class SendFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Recipient not found", Toast.LENGTH_SHORT).show();
         }
-        cursor.close();
-        recipientCursor.close();
+        if (cursor != null) cursor.close();
+        if (recipientCursor != null) recipientCursor.close();
     }
 }

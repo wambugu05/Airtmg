@@ -14,10 +14,11 @@ import androidx.fragment.app.Fragment;
 
 import com.cashmoney.airtmg.R;
 
+import java.util.Locale;
+
 public class ReceiveFragment extends Fragment {
 
     private TextView tvUserHandle;
-    private Button btnShare;
 
     @Nullable
     @Override
@@ -25,17 +26,20 @@ public class ReceiveFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_receive, container, false);
 
         tvUserHandle = view.findViewById(R.id.tvUserHandle);
-        btnShare = view.findViewById(R.id.btnShareDetails);
+        Button btnShare = view.findViewById(R.id.btnShareDetails);
 
-        String username = getActivity().getIntent().getStringExtra("USERNAME");
+        String username = null;
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            username = getActivity().getIntent().getStringExtra("USERNAME");
+        }
         if (username == null) username = "DemoUser";
 
-        tvUserHandle.setText("@" + username);
+        tvUserHandle.setText(String.format(Locale.getDefault(), "@%s", username));
 
         btnShare.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, "Send me money on Airtmg! My username is: @" + tvUserHandle.getText().toString());
+            intent.putExtra(Intent.EXTRA_TEXT, "Send me money on Airtmg! My username is: " + tvUserHandle.getText().toString());
             startActivity(Intent.createChooser(intent, "Share via"));
         });
 

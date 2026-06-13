@@ -18,7 +18,7 @@ import com.cashmoney.airtmg.R;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView tvName, tvEmail, tvLogout;
+    private TextView tvName, tvEmail;
     private DatabaseHelper dbHelper;
 
     @Nullable
@@ -28,18 +28,23 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tvProfileName);
         tvEmail = view.findViewById(R.id.tvProfileEmail);
-        tvLogout = view.findViewById(R.id.tvLogout);
+        TextView tvLogout = view.findViewById(R.id.tvLogout);
         dbHelper = new DatabaseHelper(getContext());
 
-        String username = getActivity().getIntent().getStringExtra("USERNAME");
+        String username = null;
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            username = getActivity().getIntent().getStringExtra("USERNAME");
+        }
         if (username == null) username = "DemoUser";
 
         loadProfile(username);
 
         tvLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         });
 
         return view;
@@ -47,10 +52,12 @@ public class ProfileFragment extends Fragment {
 
     private void loadProfile(String username) {
         Cursor cursor = dbHelper.getUserData(username);
-        if (cursor.moveToFirst()) {
-            tvName.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
-            tvEmail.setText(cursor.getString(cursor.getColumnIndexOrThrow("email")));
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                tvName.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));
+                tvEmail.setText(cursor.getString(cursor.getColumnIndexOrThrow("email")));
+            }
+            cursor.close();
         }
-        cursor.close();
     }
 }
