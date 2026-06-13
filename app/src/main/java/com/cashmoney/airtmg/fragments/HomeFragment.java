@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.cashmoney.airtmg.DashboardActivity;
 import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.R;
 
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
         tvExpense = view.findViewById(R.id.tvExpense);
         rvRecent = view.findViewById(R.id.rvRecentHistory);
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        TextView tvViewAll = view.findViewById(R.id.tvViewAll);
 
         dbHelper = new DatabaseHelper(getContext());
         rvRecent.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -54,6 +56,31 @@ public class HomeFragment extends Fragment {
         loadDashboardData();
 
         swipeRefresh.setOnRefreshListener(this::loadDashboardData);
+
+        // Functional navigation from Dashboard
+        tvViewAll.setOnClickListener(v -> {
+            if (getActivity() instanceof DashboardActivity) {
+                ((DashboardActivity) getActivity()).showHistory();
+            }
+        });
+
+        view.findViewById(R.id.actionSend).setOnClickListener(v -> {
+            if (getActivity() instanceof DashboardActivity) {
+                ((DashboardActivity) getActivity()).navigateTo(R.id.nav_send);
+            }
+        });
+
+        view.findViewById(R.id.actionReceive).setOnClickListener(v -> {
+            if (getActivity() instanceof DashboardActivity) {
+                ((DashboardActivity) getActivity()).navigateTo(R.id.nav_receive);
+            }
+        });
+
+        view.findViewById(R.id.actionConvert).setOnClickListener(v -> {
+            if (getActivity() instanceof DashboardActivity) {
+                ((DashboardActivity) getActivity()).navigateTo(R.id.nav_convert);
+            }
+        });
 
         return view;
     }
@@ -81,7 +108,7 @@ public class HomeFragment extends Fragment {
     private void updateStats(Cursor cursor) {
         double income = 0;
         double expense = 0;
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
@@ -96,7 +123,7 @@ public class HomeFragment extends Fragment {
         tvExpense.setText(String.format(Locale.getDefault(), "-$%.2f", expense));
     }
 
-    private class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
+    private static class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
         private final Cursor cursor;
 
         public RecentAdapter(Cursor cursor) {
@@ -134,7 +161,7 @@ public class HomeFragment extends Fragment {
             return cursor != null ? Math.min(cursor.getCount(), 3) : 0;
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        static class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvType, tvDesc, tvAmount;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);

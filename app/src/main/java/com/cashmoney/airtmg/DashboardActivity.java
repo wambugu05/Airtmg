@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 
 import com.cashmoney.airtmg.fragments.ConvertFragment;
 import com.cashmoney.airtmg.fragments.HomeFragment;
-import com.cashmoney.airtmg.fragments.HistoryFragment;
 import com.cashmoney.airtmg.fragments.ProfileFragment;
 import com.cashmoney.airtmg.fragments.ReceiveFragment;
 import com.cashmoney.airtmg.fragments.SendFragment;
@@ -22,7 +21,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         
-        // Use the modern listener
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
@@ -35,8 +33,6 @@ public class DashboardActivity extends AppCompatActivity {
                 selectedFragment = new ReceiveFragment();
             } else if (itemId == R.id.nav_convert) {
                 selectedFragment = new ConvertFragment();
-            } else if (itemId == R.id.nav_history) {
-                selectedFragment = new HistoryFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }
@@ -56,5 +52,18 @@ public class DashboardActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container, new HomeFragment())
                     .commit();
         }
+    }
+
+    public void navigateTo(int navItemId) {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(navItemId);
+    }
+
+    public void showHistory() {
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.fragment_container, new com.cashmoney.airtmg.fragments.HistoryFragment())
+                .addToBackStack(null)
+                .commit();
     }
 }

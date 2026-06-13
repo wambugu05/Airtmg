@@ -29,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean addUser(String username, String password, String email) {
+        if (isUserExists(username)) return false;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("username", username);
@@ -36,6 +37,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("email", email);
         long result = db.insert("users", null, values);
         return result != -1;
+    }
+
+    private boolean isUserExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ?", new String[]{username});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 
     public boolean checkUser(String username, String password) {
