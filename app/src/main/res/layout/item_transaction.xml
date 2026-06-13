@@ -5,22 +5,20 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOutlineVariant"
+    app:cardElevation="2dp"
     app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="18dp"
         android:gravity="center_vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:padding="14dp"
             android:src="@android:drawable/ic_menu_agenda"
             android:background="?attr/colorSecondaryContainer"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
@@ -38,17 +36,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SEND"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface" />
+                android:textColor="@color/textPrimary" />
 
             <TextView
                 android:id="@+id/tvTransDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="To: recipient • 12:45 PM"
-                android:textSize="13sp"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/textSecondary"
+                android:layout_marginTop="2dp" />
         </LinearLayout>
 
         <TextView
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-$10.00"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/accentRed" />
 

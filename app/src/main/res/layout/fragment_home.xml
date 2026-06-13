@@ -30,9 +30,10 @@
                         android:id="@+id/tvWelcome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Good Morning,"
+                        android:text="Welcome Back,"
                         android:textColor="@color/textSecondary"
-                        android:textSize="14sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvUsername"
@@ -40,14 +41,14 @@
                         android:layout_height="wrap_content"
                         android:text="User"
                         android:textColor="@color/textPrimary"
-                        android:textSize="22sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:padding="2dp"
                     android:src="@android:drawable/ic_menu_myplaces"
@@ -62,21 +63,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 app:cardCornerRadius="28dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/accentBlue">
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="@color/primary">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="28dp">
+                    android:padding="32dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Available Balance"
-                        android:textColor="#B3FFFFFF"
-                        android:textSize="14sp" />
+                        android:text="Total Available Balance"
+                        android:textColor="#FDFBFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvBalance"
@@ -85,13 +87,14 @@
                         android:layout_marginTop="8dp"
                         android:text="$ 0.00"
                         android:textColor="@color/white"
-                        android:textSize="36sp"
+                        android:textSize="42sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
+                        android:baselineAligned="false"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -104,13 +107,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Income"
                                 android:textColor="#B3FFFFFF"
-                                android:textSize="12sp" />
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
                             <TextView
                                 android:id="@+id/tvIncome"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="+$1,200.00"
+                                android:text="+$0.00"
                                 android:textColor="@color/white"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -124,13 +129,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Expense"
                                 android:textColor="#B3FFFFFF"
-                                android:textSize="12sp" />
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
                             <TextView
                                 android:id="@+id/tvExpense"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="-$450.00"
+                                android:text="-$0.00"
                                 android:textColor="@color/white"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -143,9 +150,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Quick Actions"
+                android:text="Financial Services"
                 android:textColor="@color/textPrimary"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -163,23 +170,25 @@
                     android:gravity="center"
                     android:orientation="vertical">
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="2dp">
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:cardCornerRadius="32dp"
+                        app:cardElevation="4dp">
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="16dp"
                             android:src="@android:drawable/ic_menu_send"
-                            app:tint="@color/accentBlue"/>
+                            app:tint="@color/primary"/>
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Send"
                         android:layout_marginTop="8dp"
-                        android:textSize="12sp"/>
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,10 +199,10 @@
                     android:gravity="center"
                     android:orientation="vertical">
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="2dp">
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:cardCornerRadius="32dp"
+                        app:cardElevation="4dp">
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -204,9 +213,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Request"
+                        android:text="Receive"
                         android:layout_marginTop="8dp"
-                        android:textSize="12sp"/>
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -217,55 +228,30 @@
                     android:gravity="center"
                     android:orientation="vertical">
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="2dp">
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:cardCornerRadius="32dp"
+                        app:cardElevation="4dp">
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="16dp"
                             android:src="@android:drawable/ic_menu_compass"
-                            app:tint="#F6AD55"/>
+                            app:tint="#D97706"/>
                     </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Convert"
                         android:layout_marginTop="8dp"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/actionMore"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="2dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="16dp"
-                            android:src="@android:drawable/ic_menu_more"
-                            app:tint="#A0AEC0"/>
-                    </com.google.android.material.card.MaterialCardView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="More"
-                        android:layout_marginTop="8dp"
-                        android:textSize="12sp"/>
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Recent Transactions Mini List -->
+            <!-- Recent Transactions -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -275,15 +261,17 @@
                     android:layout_height="wrap_content"
                     android:text="Recent Transactions"
                     android:textColor="@color/textPrimary"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/tvViewAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:text="View All"
-                    android:textColor="@color/accentBlue"
+                    android:textColor="@color/primary"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 

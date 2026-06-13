@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- MD3 Palette -->
-    <color name="primary">#0061A4</color>
+    <!-- MD3 Palette with High Contrast -->
+    <color name="primary">#004A7D</color> <!-- Deeper Blue -->
     <color name="onPrimary">#FFFFFF</color>
     <color name="primaryContainer">#D1E4FF</color>
     <color name="onPrimaryContainer">#001D36</color>
 
-    <color name="secondary">#535F70</color>
+    <color name="secondary">#3D4958</color> <!-- Deeper Gray -->
     <color name="onSecondary">#FFFFFF</color>
     <color name="secondaryContainer">#D7E3F7</color>
     <color name="onSecondaryContainer">#101C2B</color>
 
-    <color name="tertiary">#6B5778</color>
+    <color name="tertiary">#513D5E</color> <!-- Deeper Purple -->
     <color name="onTertiary">#FFFFFF</color>
     <color name="tertiaryContainer">#F2DAFF</color>
     <color name="onTertiaryContainer">#251431</color>
@@ -21,21 +21,21 @@
 
     <color name="background">#FDFBFF</color>
     <color name="onBackground">#1A1C1E</color>
-    <color name="surface">#FDFBFF</color>
-    <color name="onSurface">#1A1C1E</color>
-    <color name="surfaceVariant">#DFE2EB</color>
-    <color name="onSurfaceVariant">#43474E</color>
-    <color name="outline">#73777F</color>
-
-    <!-- Aliases for backward compatibility -->
-    <color name="backgroundColor">#FDFBFF</color>
-    <color name="textPrimary">#1A1C1E</color>
-    <color name="textSecondary">#43474E</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#000000</color> <!-- Pure Black for text visibility -->
+    <color name="surfaceVariant">#E1E2EC</color>
+    <color name="onSurfaceVariant">#2E3138</color> <!-- Darker variant for better visibility -->
+    <color name="outline">#44474E</color> <!-- Darker outline -->
 
     <!-- Legacy / Custom -->
-    <color name="accentBlue">#0061A4</color>
-    <color name="accentGreen">#48BB78</color>
-    <color name="accentRed">#F56565</color>
+    <color name="accentBlue">#004A7D</color>
+    <color name="accentGreen">#1E8E3E</color> <!-- Darker Green -->
+    <color name="accentRed">#D93025</color> <!-- Darker Red -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <!-- Aliases for backward compatibility with high contrast -->
+    <color name="backgroundColor">#FDFBFF</color>
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#2E3138</color>
 </resources>
