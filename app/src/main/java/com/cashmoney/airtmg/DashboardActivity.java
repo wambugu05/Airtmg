@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.cashmoney.airtmg.fragments.ConvertFragment;
 import com.cashmoney.airtmg.fragments.HomeFragment;
 import com.cashmoney.airtmg.fragments.HistoryFragment;
+import com.cashmoney.airtmg.fragments.ProfileFragment;
 import com.cashmoney.airtmg.fragments.ReceiveFragment;
 import com.cashmoney.airtmg.fragments.SendFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +37,8 @@ public class DashboardActivity extends AppCompatActivity {
                 selectedFragment = new ConvertFragment();
             } else if (itemId == R.id.nav_history) {
                 selectedFragment = new HistoryFragment();
+            } else if (itemId == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {
