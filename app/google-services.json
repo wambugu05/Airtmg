@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270206692471",
+    "project_id": "airtmg-2d3a3",
+    "storage_bucket": "airtmg-2d3a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270206692471:android:a35ea172f91e36eca7ea72",
+        "android_client_info": {
+          "package_name": "com.cashmoney.airtmg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmHT4xkJFebtEKW3CLRfaFW8ASEZ2CZ-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

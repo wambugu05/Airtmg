@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.LoginActivity;
 import com.cashmoney.airtmg.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,15 +33,14 @@ public class ProfileFragment extends Fragment {
         TextView tvLogoutBtn = view.findViewById(R.id.tvLogout);
         dbHelper = new DatabaseHelper(getContext());
 
-        String username = null;
-        if (getActivity() != null && getActivity().getIntent() != null) {
-            username = getActivity().getIntent().getStringExtra("USERNAME");
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String email = firebaseUser.getEmail();
+            loadProfileFromLocal(email);
         }
-        if (username == null) username = "DemoUser";
-
-        loadProfile(username);
 
         tvLogoutBtn.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
             if (getActivity() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -50,8 +51,9 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void loadProfile(String username) {
-        Cursor cursor = dbHelper.getUserData(username);
+    private void loadProfileFromLocal(String email) {
+        if (email == null) return;
+        Cursor cursor = dbHelper.getUserDataByEmail(email);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 tvName.setText(cursor.getString(cursor.getColumnIndexOrThrow("username")));

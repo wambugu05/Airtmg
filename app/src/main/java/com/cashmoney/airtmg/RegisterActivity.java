@@ -10,17 +10,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername, etEmail, etPassword;
     private ProgressBar progressBar;
     private DatabaseHelper dbHelper;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mAuth = FirebaseAuth.getInstance();
         dbHelper = new DatabaseHelper(this);
 
         etUsername = findViewById(R.id.etUsername);
@@ -37,15 +41,29 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            } else if (password.length() < 6) {
+                Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
             } else {
                 progressBar.setVisibility(View.VISIBLE);
-                if (dbHelper.addUser(username, password, email)) {
-                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(RegisterActivity.this, "Registration failed. Username may already exist.", Toast.LENGTH_SHORT).show();
-                }
+                
+                // Create user in Firebase Auth
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                // On Firebase success, save profile details locally
+                                if (dbHelper.addUser(username, password, email)) {
+                                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(RegisterActivity.this, "Local profile creation failed", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                String errorMsg = task.getException() != null ? task.getException().getMessage() : "Registration failed";
+                                Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
 

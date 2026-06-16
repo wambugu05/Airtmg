@@ -1,6 +1,7 @@
 package com.cashmoney.airtmg;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,22 +15,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.concurrent.Executor;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword;
+    private EditText etEmail, etPassword;
     private ProgressBar progressBar;
     private DatabaseHelper dbHelper;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
         dbHelper = new DatabaseHelper(this);
 
-        etUsername = findViewById(R.id.etUsername);
+        etEmail = findViewById(R.id.etUsername); // Keeping same ID but using as Email
         etPassword = findViewById(R.id.etPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
         TextView tvRegister = findViewById(R.id.tvRegister);
@@ -47,21 +52,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void performLogin() {
-        String username = etUsername.getText().toString();
+        String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
-        if (username.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        if (dbHelper.checkUser(username, password)) {
-            navigateToDashboard(username);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+        
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // After Firebase login, we need the username for the Dashboard.
+                        // We can get it from our local database using the email.
+                        String username = getUsernameFromLocal(email);
+                        navigateToDashboard(username);
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        String errorMsg = task.getException() != null ? task.getException().getMessage() : "Login failed";
+                        Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private String getUsernameFromLocal(String email) {
+        Cursor cursor = dbHelper.getUserDataByEmail(email);
+        String username = "User";
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                username = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+            }
+            cursor.close();
         }
+        return username;
     }
 
     private void navigateToDashboard(String username) {

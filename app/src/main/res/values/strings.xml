@@ -6,6 +6,7 @@
     <string name="login_title">Welcome Back</string>
     <string name="login_subtitle">Securely log in to your wallet</string>
     <string name="username">Username</string>
+    <string name="email_hint">Email Address</string>
     <string name="password">Password</string>
     <string name="login_btn">Login</string>
     <string name="new_user_register">New User? Create Account</string>

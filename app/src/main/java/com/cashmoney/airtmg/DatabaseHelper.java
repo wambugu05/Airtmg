@@ -60,6 +60,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM users WHERE username = ?", new String[]{username});
     }
 
+    public Cursor getUserDataByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+    }
+
     public boolean updateBalance(int userId, double newBalance) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
