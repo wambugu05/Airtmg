@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,25 +14,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send Money"
-            android:textSize="24sp"
+            android:text="@string/send"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/textPrimary"
+            android:textColor="@color/black"
             android:layout_marginTop="24dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transfer funds instantly to any user"
+            android:text="Transfer funds instantly"
             android:textColor="@color/textSecondary"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="40dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,7 +45,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilRecipient"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Recipient Username"
@@ -52,15 +55,18 @@
                         android:id="@+id/etRecipient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilAmount"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:hint="Amount (USD)"
                     app:startIconDrawable="@android:drawable/ic_menu_send">
 
@@ -68,40 +74,25 @@
                         android:id="@+id/etAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnSendMoney"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="40dp"
                     android:text="Confirm Transfer"
-                    android:textAllCaps="false"
-                    android:backgroundTint="@color/accentBlue"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Security Note"
-            android:textColor="@color/textPrimary"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Please ensure the recipient username is correct. Transactions on Airtmg are instant and cannot be reversed."
-            android:textColor="@color/textSecondary"
-            android:textSize="12sp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
