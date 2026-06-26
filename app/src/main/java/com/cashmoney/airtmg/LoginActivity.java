@@ -16,6 +16,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.concurrent.Executor;
 
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         dbHelper = new DatabaseHelper(this);
 
-        etEmail = findViewById(R.id.etUsername); // Keeping same ID but using as Email
+        etEmail = findViewById(R.id.etUsername); // Using ID from layout
         etPassword = findViewById(R.id.etPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
         TextView tvRegister = findViewById(R.id.tvRegister);
@@ -47,13 +48,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Add Biometric Prompt
+        // Use Logo as trigger for Biometric login
         findViewById(R.id.ivLogo).setOnClickListener(v -> showBiometricPrompt());
     }
 
     private void performLogin() {
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -65,24 +66,32 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // After Firebase login, we need the username for the Dashboard.
-                        // We can get it from our local database using the email.
+                        // After Firebase login, sync with local username for Dashboard
                         String username = getUsernameFromLocal(email);
                         navigateToDashboard(username);
                     } else {
                         progressBar.setVisibility(View.GONE);
                         String errorMsg = task.getException() != null ? task.getException().getMessage() : "Login failed";
+                        
+                        if (errorMsg != null && errorMsg.contains("CONFIGURATION_NOT_FOUND")) {
+                            errorMsg = "Firebase Auth error: Ensure 'Email/Password' is enabled in Firebase Console > Authentication > Sign-in method";
+                        }
+
                         Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private String getUsernameFromLocal(String email) {
+        if (email == null) return "User";
         Cursor cursor = dbHelper.getUserDataByEmail(email);
         String username = "User";
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                username = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+                int index = cursor.getColumnIndex("username");
+                if (index != -1) {
+                    username = cursor.getString(index);
+                }
             }
             cursor.close();
         }
@@ -97,6 +106,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showBiometricPrompt() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Please log in with password once to enable biometrics", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this,
                 executor, new BiometricPrompt.AuthenticationCallback() {
@@ -109,20 +124,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                // For demo, we log in as the last registered user or "DemoUser"
-                navigateToDashboard("DemoUser");
+                // On success, use the already authenticated user's profile
+                String username = getUsernameFromLocal(user.getEmail());
+                navigateToDashboard(username);
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Auth failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Biometric Login")
-                .setSubtitle("Log in using your fingerprint")
+                .setSubtitle("Log in using your fingerprint or face")
                 .setNegativeButtonText("Use account password")
                 .build();
 

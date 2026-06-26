@@ -61,6 +61,11 @@ public class RegisterActivity extends AppCompatActivity {
                             } else {
                                 progressBar.setVisibility(View.GONE);
                                 String errorMsg = task.getException() != null ? task.getException().getMessage() : "Registration failed";
+                                
+                                if (errorMsg != null && errorMsg.contains("CONFIGURATION_NOT_FOUND")) {
+                                    errorMsg = "Firebase Auth error: Ensure 'Email/Password' is enabled in Firebase Console > Authentication > Sign-in method";
+                                }
+
                                 Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                             }
                         });

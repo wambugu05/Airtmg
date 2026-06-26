@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.cashmoney.airtmg.DatabaseHelper;
 import com.cashmoney.airtmg.LoginActivity;
 import com.cashmoney.airtmg.R;
+import com.cashmoney.airtmg.SecuritySettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,6 +31,8 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tvProfileName);
         tvEmail = view.findViewById(R.id.tvProfileEmail);
+        TextView tvSecurity = view.findViewById(R.id.tvSecuritySettings);
+        TextView tvPartners = view.findViewById(R.id.tvPartnerDirectory);
         TextView tvLogoutBtn = view.findViewById(R.id.tvLogout);
         dbHelper = new DatabaseHelper(getContext());
 
@@ -38,6 +41,17 @@ public class ProfileFragment extends Fragment {
             String email = firebaseUser.getEmail();
             loadProfileFromLocal(email);
         }
+
+        tvSecurity.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SecuritySettingsActivity.class);
+            startActivity(intent);
+        });
+
+        tvPartners.setOnClickListener(v -> {
+            // Implementation for API Consumer Directory could go here
+            // Intent intent = new Intent(getActivity(), PartnerDirectoryActivity.class);
+            // startActivity(intent);
+        });
 
         tvLogoutBtn.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
